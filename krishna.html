@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Krishna Reddy Choodi - Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background: linear-gradient(120deg, #4facfe, #00f2fe);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===== Stylish Header ===== */
+        .header {
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+
+        /* ===== Calendar ===== */
+        .calendar {
+            background: #fff;
+            width: 360px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .calendar-header {
+            background: #4facfe;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-header button {
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .calendar-header button:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .month-year {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .weekdays, .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+        }
+
+        .weekdays div {
+            background: #f1f1f1;
+            padding: 8px 0;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .days div {
+            padding: 10px 0;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        /* Different colors for days */
+        .sun { background: #ffe5e5; color: #d10000; }
+        .mon { background: #e8f4ff; }
+        .tue { background: #e8fff1; }
+        .wed { background: #fff7e6; }
+        .thu { background: #f3e8ff; }
+        .fri { background: #e6fffd; }
+        .sat { background: #fff0f5; }
+
+        .today {
+            border: 2px solid #4facfe;
+            font-weight: bold;
+        }
+
+        .days div:hover {
+            background: #d9ecff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== Header with Your Name ===== -->
+<div class="header">
+    <h1>Krishna Reddy Choodi</h1>
+    <p>Personal Calendar Dashboard</p>
+</div>
+
+<!-- ===== Calendar ===== -->
+<div class="calendar">
+    <div class="calendar-header">
+        <button onclick="prevMonth()">❮</button>
+        <div class="month-year" id="monthYear"></div>
+        <button onclick="nextMonth()">❯</button>
+    </div>
+
+    <div class="weekdays">
+        <div>Sun</div>
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+    </div>
+
+    <div class="days" id="days"></div>
+</div>
+
+<script>
+    const monthYear = document.getElementById("monthYear");
+    const daysContainer = document.getElementById("days");
+
+    let currentDate = new Date();
+
+    function renderCalendar() {
+        daysContainer.innerHTML = "";
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        monthYear.innerText = months[month] + " " + year;
+
+        // Empty cells before first day
+        for (let i = 0; i < firstDay; i++) {
+            daysContainer.innerHTML += "<div></div>";
+        }
+
+        // Days
+        for (let day = 1; day <= lastDate; day++) {
+            const date = new Date(year, month, day);
+            const dayOfWeek = date.getDay();
+
+            let className = "";
+            if (dayOfWeek === 0) className = "sun";
+            if (dayOfWeek === 1) className = "mon";
+            if (dayOfWeek === 2) className = "tue";
+            if (dayOfWeek === 3) className = "wed";
+            if (dayOfWeek === 4) className = "thu";
+            if (dayOfWeek === 5) className = "fri";
+            if (dayOfWeek === 6) className = "sat";
+
+            const today = new Date();
+            if (
+                day === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear()
+            ) {
+                className += " today";
+            }
+
+            daysContainer.innerHTML += `<div class="${className}">${day}</div>`;
+        }
+    }
+
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    }
+
+    renderCalendar();
+</script>
+
+</body>
+</html>
