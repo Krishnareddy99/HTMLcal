@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login & Calendar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(120deg, #4facfe, #00f2fe);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ===== Main Container ===== */
+        .main-container {
+            width: 90%;
+            max-width: 900px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+
+        /* ===== Content Layout ===== */
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 25px;
+            gap: 20px;
+        }
+
+        /* ===== Login Box ===== */
+        .login-box {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-box {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 12px 40px 12px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .input-box i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #4facfe;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #2f8dfc;
+        }
+
+        .login-msg {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: green;
+        }
+
+        /* ===== Calendar ===== */
+        .calendar {
+            background: #f9f9f9;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .calendar-header {
+            background: #4facfe;
+            color: #fff;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendar-header button {
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .month-year {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .weekdays, .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+        }
+
+        .weekdays div {
+            background: #eee;
+            padding: 8px 0;
+            font-weight: bold;
+        }
+
+        .days div {
+            padding: 10px 0;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        /* Day Colors */
+        .sun { background: #ffe5e5; color: #d10000; }
+        .mon { background: #e8f4ff; }
+        .tue { background: #e8fff1; }
+        .wed { background: #fff7e6; }
+        .thu { background: #f3e8ff; }
+        .fri { background: #e6fffd; }
+        .sat { background: #fff0f5; }
+
+        .today {
+            border: 2px solid #4facfe;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- ===== Header ===== -->
+    <div class="header">
+        <h1>Krishna Reddy Choodi</h1>
+        <p>Login & Calendar Dashboard</p>
+    </div>
+
+    <!-- ===== Main Content ===== -->
+    <div class="content">
+
+        <!-- ===== Login Section ===== -->
+        <div class="login-box">
+            <h2>User Login</h2>
+
+            <div class="input-box">
+                <input type="text" id="username" placeholder="Username">
+                <i class="fa fa-user"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" id="password" placeholder="Password">
+                <i class="fa fa-lock"></i>
+            </div>
+
+            <button class="login-btn" onclick="login()">Login</button>
+            <div class="login-msg" id="loginMsg"></div>
+        </div>
+
+        <!-- ===== Calendar Section ===== -->
+        <div class="calendar">
+            <div class="calendar-header">
+                <button onclick="prevMonth()">❮</button>
+                <div class="month-year" id="monthYear"></div>
+                <button onclick="nextMonth()">❯</button>
+            </div>
+
+            <div class="weekdays">
+                <div>Sun</div><div>Mon</div><div>Tue</div>
+                <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+            </div>
+
+            <div class="days" id="days"></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    /* ===== Login Logic ===== */
+    function login() {
+        const user = document.getElementById("username").value;
+        const pass = document.getElementById("password").value;
+        const msg = document.getElementById("loginMsg");
+
+        if (user === "admin" && pass === "1234") {
+            msg.style.color = "green";
+            msg.innerText = "Login Successful!";
+        } else {
+            msg.style.color = "red";
+            msg.innerText = "Invalid Username or Password!";
+        }
+    }
+
+    /* ===== Calendar Logic ===== */
+    const monthYear = document.getElementById("monthYear");
+    const daysContainer = document.getElementById("days");
+
+    let currentDate = new Date();
+
+    function renderCalendar() {
+        daysContainer.innerHTML = "";
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const lastDate = new Date(year, month + 1, 0).getDate();
+
+        const months = [
+            "January","February","March","April","May","June",
+            "July","August","September","October","November","December"
+        ];
+
+        monthYear.innerText = months[month] + " " + year;
+
+        for (let i = 0; i < firstDay; i++) {
+            daysContainer.innerHTML += "<div></div>";
+        }
+
+        for (let day = 1; day <= lastDate; day++) {
+            const date = new Date(year, month, day);
+            const dayOfWeek = date.getDay();
+
+            let className = "";
+            if (dayOfWeek === 0) className = "sun";
+            if (dayOfWeek === 1) className = "mon";
+            if (dayOfWeek === 2) className = "tue";
+            if (dayOfWeek === 3) className = "wed";
+            if (dayOfWeek === 4) className = "thu";
+            if (dayOfWeek === 5) className = "fri";
+            if (dayOfWeek === 6) className = "sat";
+
+            const today = new Date();
+            if (
+                day === today.getDate() &&
+                month === today.getMonth() &&
+                year === today.getFullYear()
+            ) {
+                className += " today";
+            }
+
+            daysContainer.innerHTML += `<div class="${className}">${day}</div>`;
+        }
+    }
+
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    }
+
+    renderCalendar();
+</script>
+
+</body>
+</html>
